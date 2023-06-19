@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+    <extend-entity entity-name="OrderHeader" package="mantle.order"  >
+        <field name="orderTypeEnumId" type="id"/>
+        <relationship type="one" title="OrderType" related="moqui.basic.Enumeration" short-alias="orderType">
+            <key-map field-name="orderTypeEnumId"/></relationship>
+        <seed-data>
+<!--            Order Type-->
+            <moqui.basic.EnumerationType description="Order Type" enumTypeId="OrderType"/>
+
+            <moqui.basic.Enumeration description="Sales" enumId="OtSales" enumTypeId="OrderType"/>
+            <moqui.basic.Enumeration description="Purchase" enumId="OtPurchase" enumTypeId="OrderType"/>
+            <moqui.basic.Enumeration description="Test Machine Request" enumId="OtTestMachineRequest" enumTypeId="OrderType"/>
+            <moqui.basic.Enumeration description="Test Machine Sales" enumId="OtTestMachineSales" enumTypeId="OrderType"/>
+            <moqui.basic.Enumeration description="Test Machine Purchase" enumId="OtTestMachinePurchase" enumTypeId="OrderType"/>
+            <moqui.basic.Enumeration description="Test Machine Take Back" enumId="OtTestMachineTakeBack" enumTypeId="OrderType"/>
+
+            <!-- Test Machine  Order Types -->
+            <moqui.basic.Enumeration description="Test Machine Order Types" enumId="EngTestMachineOrderType" enumTypeId="EnumGroup"/>
+            <moqui.basic.EnumGroupMember enumId="OtTestMachineRequest" enumGroupEnumId="EngTestMachineOrderType"/>
+            <moqui.basic.EnumGroupMember enumId="OtTestMachinePurchase" enumGroupEnumId="EngTestMachineOrderType"/>
+            <moqui.basic.EnumGroupMember enumId="OtTestMachineSales" enumGroupEnumId="EngTestMachineOrderType"/>
+            <moqui.basic.EnumGroupMember enumId="OtTestMachineTakeBack" enumGroupEnumId="EngTestMachineOrderType"/>
+
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.EnumerationType" fieldName="description"
+                                              pkValue="OrderType" locale="zh_CN" localized="订单类型" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtSales" locale="zh_CN" localized="销售" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtPurchase" locale="zh_CN" localized="采购" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtTestMachineRequest" locale="zh_CN" localized="样机申请" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtTestMachineSales" locale="zh_CN" localized="样机销售" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtTestMachinePurchase" locale="zh_CN" localized="样机采购" />
+            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"
+                                              pkValue="OtTestMachineTakeBack" locale="zh_CN" localized="样机回收" />
+
+<!--            Status Flow-->
+            <moqui.basic.StatusFlow statusFlowId="TestMachineRequest" description="request status transitions for TestMachine"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderOpen"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderPlaced"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderApproved"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderHold"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderRejected"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderCancelled"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderProcessing"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineRequest" statusId="OrderCompleted"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderOpen" toStatusId="OrderPlaced" transitionName="Place"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderPlaced" toStatusId="OrderApproved" transitionName="Approve"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderPlaced" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderPlaced" toStatusId="OrderRejected" transitionName="Reject"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderPlaced" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderApproved" toStatusId="OrderProcessing" transitionName="Process"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderApproved" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderApproved" toStatusId="OrderRejected" transitionName="Reject"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderApproved" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineRequest" statusId="OrderProcessing" toStatusId="OrderCompleted" transitionName="Complete"/>
+
+            <moqui.basic.StatusFlow statusFlowId="TestMachineSales" description="sales status transitions for TestMachine"/>
+
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderOpen"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderPlaced"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderApproved"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderHold"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderRejected"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderCancelled"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineSales" statusId="OrderCompleted"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderOpen" toStatusId="OrderPlaced" transitionName="Place"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderPlaced" toStatusId="OrderApproved" transitionName="Approve"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderPlaced" toStatusId="OrderOpen" transitionName="ReOpen"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderPlaced" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderPlaced" toStatusId="OrderRejected" transitionName="Reject"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderPlaced" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineSales" statusId="OrderApproved" toStatusId="OrderCompleted" transitionName="Complete"/>
+
+            <moqui.basic.StatusFlow statusFlowId="TestMachinePurchase" description="purchase status transitions for TestMachine"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderOpen"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderPlaced"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderApproved"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderHold"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderRejected"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderCancelled"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderProcessing"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderSent"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachinePurchase" statusId="OrderCompleted"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderOpen" toStatusId="OrderPlaced" transitionName="Place"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderPlaced" toStatusId="OrderApproved" transitionName="Approve"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderPlaced" toStatusId="OrderOpen" transitionName="ReOpen"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderPlaced" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderPlaced" toStatusId="OrderRejected" transitionName="Reject"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderPlaced" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderApproved" toStatusId="OrderSent" transitionName="Sent"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderSent" toStatusId="OrderProcessing" transitionName="Process"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachinePurchase" statusId="OrderProcessing" toStatusId="OrderCompleted" transitionName="Complete"/>
+            <moqui.basic.StatusFlow statusFlowId="TestMachineTakeBack" description="Take back status transitions for TestMachine"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderOpen"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderPlaced"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderSent"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderHold"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderCancelled"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderProcessing"/>
+            <moqui.basic.StatusFlowItem statusFlowId="TestMachineTakeBack" statusId="OrderCompleted"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderOpen" toStatusId="OrderPlaced" transitionName="Place"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderPlaced" toStatusId="OrderSent" transitionName="Sent"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderPlaced" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderPlaced" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderSent" toStatusId="OrderProcessing" transitionName="Process"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderSent" toStatusId="OrderHold" transitionName="Hold"/>
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderSent" toStatusId="OrderCancelled" transitionName="Cancel"/>
+
+            <moqui.basic.StatusFlowTransition statusFlowId="TestMachineTakeBack" statusId="OrderProcessing" toStatusId="OrderCompleted" transitionName="Complete"/>
+
+        </seed-data>
+    </extend-entity>
+<!--    <extend-entity entity-name="ReturnHeader" package="mantle.order.return"  >-->
+<!--        <field name="returnTypeEnumId" type="id"/>-->
+<!--        <relationship type="one" title="ReturnType" related="moqui.basic.Enumeration" short-alias="orderType">-->
+<!--            <key-map field-name="returnTypeEnumId"/></relationship>-->
+<!--        <seed-data>-->
+<!--&lt;!&ndash;            Return Type&ndash;&gt;-->
+<!--            <moqui.basic.EnumerationType description="Return Type" enumTypeId="ReturnType"/>-->
+
+<!--            <moqui.basic.Enumeration description="Sales" enumId="RtSales" enumTypeId="ReturnType"/>-->
+<!--            <moqui.basic.Enumeration description="Purchase" enumId="RtPurchase" enumTypeId="ReturnType"/>-->
+<!--            <moqui.basic.Enumeration description="Test Machine Take Back" enumId="RtTestMachineTakeBack" enumTypeId="ReturnType"/>-->
+<!--            <moqui.basic.Enumeration description="Test Machine Sales Return" enumId="RtTestMachineSalesReturn" enumTypeId="ReturnType"/>-->
+<!--            <moqui.basic.Enumeration description="Test Machine Purchase Return" enumId="RtTestMachinePurchaseReturn" enumTypeId="ReturnType"/>-->
+
+<!--            &lt;!&ndash; Test Machine  Return Types &ndash;&gt;-->
+<!--            <moqui.basic.Enumeration description="Test Machine Return Type" enumId="EngTestMachineReturnType" enumTypeId="EnumGroup"/>-->
+<!--            <moqui.basic.EnumGroupMember enumId="RtTestMachineTakeBack" enumGroupEnumId="EngTestMachineReturnType"/>-->
+<!--            <moqui.basic.EnumGroupMember enumId="RtTestMachineSalesReturn" enumGroupEnumId="EngTestMachineReturnType"/>-->
+<!--            <moqui.basic.EnumGroupMember enumId="RtTestMachinePurchaseReturn" enumGroupEnumId="EngTestMachineReturnType"/>-->
+
+<!--            <moqui.basic.LocalizedEntityField entityName="moqui.basic.EnumerationType" fieldName="description"-->
+<!--                                              pkValue="ReturnType" locale="zh_CN" localized="退回类型" />-->
+<!--            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"-->
+<!--                                              pkValue="RtSales" locale="zh_CN" localized="销售" />-->
+<!--            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"-->
+<!--                                              pkValue="RtPurchase" locale="zh_CN" localized="采购" />-->
+<!--            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"-->
+<!--                                              pkValue="RtTestMachineTakeBack" locale="zh_CN" localized="样机收回" />-->
+<!--            <moqui.basic.LocalizedEntityField entityName="moqui.basic.Enumeration" fieldName="description"-->
+<!--                                              pkValue="RtTestMachinePurchaseReturn" locale="zh_CN" localized="样机采购" />-->
+
+<!--        </seed-data>-->
+<!--    </extend-entity>-->
+    <extend-entity entity-name="Organization" package="mantle.party">
+        <field name="reservationOrderEnumId" type="id"/>
+        <relationship type="one" title="AssetReservationOrder" related="moqui.basic.Enumeration" short-alias="assetReservationOrder">
+            <key-map field-name="reservationOrderEnumId"/></relationship>
+    </extend-entity>
+
+    <entity entity-name="BylBusinessLogicConfig" package="beiyelin.order">
+        <field name="enumId" type="id" is-pk="true"/>
+        <field name="needPayment" type="text-indicator" default="Y"/>
+        <field name="needShipment" type="text-indicator" default="Y"/>
+        <field name="needInventory" type="text-indicator" default="Y"/>
+        <field name="needAssetJourney" type="text-indicator" default="Y"/>
+        <relationship type="one" related="moqui.basic.Enumeration" />
+        <seed-data>
+            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineRequest" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N"/>
+            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineSales" needPayment="Y" needShipment="N" needInventory="N" needAssetJourney="N"/>
+            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineTakeBack" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N"/>
+
+        </seed-data>
+    </entity>
+
+</entities>
