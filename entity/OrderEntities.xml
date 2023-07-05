@@ -17,6 +17,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <extend-entity entity-name="OrderHeader" package="mantle.order"  >
         <field name="orderTypeEnumId" type="id"/>
+        <field name="planTakeBackDate" type="date-time"><description>计划退回时间</description> </field>
         <relationship type="one" title="OrderType" related="moqui.basic.Enumeration" short-alias="orderType">
             <key-map field-name="orderTypeEnumId"/></relationship>
         <seed-data>
@@ -183,19 +184,50 @@ along with this software (see the LICENSE.md file). If not, see
             <key-map field-name="reservationOrderEnumId"/></relationship>
     </extend-entity>
 
-    <entity entity-name="BylBusinessLogicConfig" package="beiyelin.order">
+    <entity entity-name="OrderTypeParameter" package="mantle.order">
         <field name="enumId" type="id" is-pk="true"/>
         <field name="needPayment" type="text-indicator" default="Y"/>
         <field name="needShipment" type="text-indicator" default="Y"/>
         <field name="needInventory" type="text-indicator" default="Y"/>
         <field name="needAssetJourney" type="text-indicator" default="Y"/>
+        <field name="needSerialNumber" type="text-indicator" default="Y"/>
         <relationship type="one" related="moqui.basic.Enumeration" />
         <seed-data>
-            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineRequest" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N"/>
-            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineSales" needPayment="Y" needShipment="N" needInventory="N" needAssetJourney="N"/>
-            <beiyelin.order.BylBusinessLogicConfig enumId="OtTestMachineTakeBack" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N"/>
-
+            <mantle.order.OrderTypeParameter enumId="OtTestMachineRequest" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N" needSerialNumber="Y"/>
+            <mantle.order.OrderTypeParameter enumId="OtTestMachineSales" needPayment="Y" needShipment="N" needInventory="N" needAssetJourney="N"  needSerialNumber="Y"/>
+            <mantle.order.OrderTypeParameter enumId="OtTestMachineTakeBack" needPayment="N" needShipment="Y" needInventory="Y" needAssetJourney="N" needSerialNumber="Y"/>
+            <mantle.order.OrderTypeParameter enumId="OtTestMachinePurchase" needPayment="Y" needShipment="Y" needInventory="Y" needAssetJourney="Y" needSerialNumber="Y"/>
         </seed-data>
+    </entity>
+    <entity entity-name="OrderItemFromIssuance" package="mantle.order" cache="never">
+        <field name="orderItemFromIssuanceId" type="id" is-pk="true"/>
+        <field name="orderId" type="id"/>
+        <field name="orderItemSeqId" type="id"/>
+        <field name="assetId" type="id"/>
+        <field name="productId" type="id" not-null="true"/>
+        <field name="quantity" type="number-decimal"/>
+        <field name="quantityNotHandled" type="number-decimal"/>
+        <field name="assetIssuanceId" type="id"/>
+        <field name="fromOrderId" type="id"/>
+        <field name="fromOrderItemSeqId" type="id"/>
+<!--        <field name="fromReturnId" type="id"/>-->
+<!--        <field name="fromReturnItemSeqId" type="id"/>-->
+        <relationship type="one" related="mantle.product.Product" short-alias="product"/>
+        <relationship type="one" related="mantle.product.asset.Asset" short-alias="asset"/>
+        <relationship type="one" related="mantle.product.issuance.AssetIssuance" short-alias="assetIssuance"/>
+
+        <relationship type="one-nofk" related="mantle.order.OrderHeader" short-alias="orderHeader"/>
+        <relationship type="one" related="mantle.order.OrderItem" short-alias="orderItem"/>
+
+        <relationship type="one" related="mantle.order.OrderHeader" short-alias="fromOrderHeader">
+            <key-map field-name="fromOrderId" related="orderId"/>
+        </relationship>
+        <relationship type="one" related="mantle.order.OrderItem" short-alias="fromOrderItem">
+            <key-map field-name="fromOrderId" related="orderId"/>
+            <key-map field-name="fromOrderItemSeqId" related="orderItemSeqId"/>
+        </relationship>
+<!--        <relationship type="one" related="mantle.order.return.ReturnHeader" short-alias="returnHeader"/>-->
+
     </entity>
 
 </entities>

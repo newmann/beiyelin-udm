@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+        <!-- ========================================================= -->
+        <!--  - AssetBorrow -->
+        <!--    记录资产当前在借的记录，包括样机、设备等-->e
+        <!-- ========================================================= -->
+        <entity entity-name="AssetBorrow" package="mantle.product.asset" cache="never">
+            <field name="assetBorrowId" type="id" is-pk="true"/>
+            <field name="assetId" type="id"/>
+            <field name="assetIssuanceId" type="id"/>
+            <field name="orderId" type="id"/>
+            <field name="orderItemSeqId" type="id"/>
+            <field name="borrowPartyId" type="id"/>
+            <field name="productId" type="id"/>
+            <field name="quantity" type="number-decimal" default="0.0"/>
+            <field name="quantityPlaced" type="number-decimal" default="0.0"/>
+            <field name="quantityReturned" type="number-decimal" default="0.0">
+                <description>The quantity returned.</description>
+            </field>
+            <field name="planTakeBackDate" type="date-time"><description>计划退回时间</description> </field>
+            <relationship type="one" related="mantle.product.issuance.AssetIssuance" short-alias="assetIssuance"/>
+            <relationship type="one" related="mantle.product.asset.Asset" short-alias="asset"/>
+            <relationship type="one" related="mantle.product.Product" short-alias="product"/>
+            <relationship type="one-nofk" related="mantle.order.OrderHeader" short-alias="orderHeader"/>
+            <relationship type="one-nofk" related="mantle.order.OrderItem" short-alias="orderItem"/>
+        </entity>
+
+        <view-entity entity-name="AssetBorrowProductCategory" package="mantle.product.asset">
+            <member-entity entity-alias="PCM" entity-name="mantle.product.category.ProductCategoryMember"/>
+            <member-entity entity-alias="ATB" entity-name="mantle.product.asset.AssetBorrow" join-from-alias="PCM">
+                <key-map field-name="productId"/></member-entity>
+            <alias-all entity-alias="PCM"><exclude field="comments"/><exclude field="quantity"/></alias-all>
+            <alias-all entity-alias="ATB"><exclude field="productId"/></alias-all>
+        </view-entity>
+</entities>
