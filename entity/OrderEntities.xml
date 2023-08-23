@@ -17,7 +17,9 @@ along with this software (see the LICENSE.md file). If not, see
 
     <extend-entity entity-name="OrderHeader" package="mantle.order"  >
         <field name="orderTypeEnumId" type="id"/>
-        <field name="planTakeBackDate" type="date-time"><description>计划退回时间</description> </field>
+<!--       转移到OrderPart
+ <field name="planTakeBackDate" type="date-time"><description>计划退回时间</description> </field>-->
+        <field name="statusFlowId" type="id" default="Default"/>
         <relationship type="one" title="OrderType" related="moqui.basic.Enumeration" short-alias="orderType">
             <key-map field-name="orderTypeEnumId"/></relationship>
         <seed-data>
@@ -182,6 +184,10 @@ along with this software (see the LICENSE.md file). If not, see
         <field name="reservationOrderEnumId" type="id"/>
         <relationship type="one" title="AssetReservationOrder" related="moqui.basic.Enumeration" short-alias="assetReservationOrder">
             <key-map field-name="reservationOrderEnumId"/></relationship>
+    </extend-entity>
+
+    <extend-entity entity-name="OrderPart" package="mantle.order">
+        <field name="planTakeBackDate" type="date-time"><description>计划退回时间</description> </field>
     </extend-entity>
 
     <entity entity-name="OrderTypeParameter" package="mantle.order">

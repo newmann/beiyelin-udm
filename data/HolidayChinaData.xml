@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<entity-facade-xml type="install">
+    <!-- Chinese Legal Holidays -->
+    <mantle.work.effort.WorkEffortCategory workEffortCategoryId="HolidayChinaLegal" description="Chinese Legal Holidays"/>
+
+<!--    &lt;!&ndash; Recurring Holidays &ndash;&gt;-->
+<!--    <workEfforts workEffortId="USA_COLD" workEffortName="Columbus Day" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"-->
+<!--            visibilityEnumId="WevAllUsers" allDayStart="1937-10-11" recurStartCron="0 15 10 ? 10 2#2">-->
+<!--        <categories workEffortCategoryId="HolidayUsaFed"/><categories workEffortCategoryId="HolidayUsaBank"/></workEfforts>-->
+<!--
+元旦 New Year's Day 1月1日
+春节 Spring Festival 农历正月初一
+清明节 Ching Ming Festival 4月5日
+劳动节 International Labour Day 5月1日
+端午节 Dragon Boat Festival 农历五月初五
+中秋节 Mid-Autumn Festival 农历八月十五
+国庆节 National Day 10月1日
+-->
+
+    <!-- 2023 -->
+    <workEfforts workEffortId="CHINA_2023_NYD" workEffortName="New Years Day" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2022-12-31" allDayEnd="2023-01-02"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+    <workEfforts workEffortId="CHINA_2023_SF" workEffortName="Spring Festival" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2023-01-21"  allDayEnd="2023-01-27"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+    <workEfforts workEffortId="CHINA_2023_CMF" workEffortName="Ching Ming Festival" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2023-04-05"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+    <workEfforts workEffortId="CHINA_2023_ILD" workEffortName="International Labour Day" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2023-04-29"  allDayEnd="2023-05-03"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+    <workEfforts workEffortId="CHINA_2023_DBF" workEffortName="Dragon Boat Festival" workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2023-06-22" allDayEnd="2023-06-24"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+    <workEfforts workEffortId="CHINA_2023_MAFND" workEffortName="Mid-Autumn Festival + National Day  " workEffortTypeEnumId="WetEvent" purposeEnumId="WepHoliday"
+            visibilityEnumId="WevAllUsers" allDayStart="2023-09-29" allDayEnd="2023-10-06"><categories workEffortCategoryId="HolidayChinaLegal"/></workEfforts>
+
+
+
+</entity-facade-xml>
